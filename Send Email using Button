@@ -1,0 +1,33 @@
+//
+//
+//Get Contact Email
+contact_details = zoho.crm.getRecordById("Contacts",contact_id);
+contact_email = contact_details.get("Email");
+//
+//
+//Get URL of email
+email_url = "https://www.zohoapis.com/crm/v3/settings/email_templates/" + "3153989000040409004";
+//
+//
+//Get Email Template
+email_templates_response = invokeurl
+[
+	url :email_url
+	type :GET
+	connection:"email_template"
+];
+// info email_templates_response ;
+email_content = email_templates_response.get("email_templates").get(0).get("content");
+info email_content;
+// email_content = email_content.replaceAll("\$\{!Contacts.First_Name\}",contact_details.get("First_Name"));
+//
+//
+// Send Email Template
+sendmail
+[
+	from :zoho.adminuserid
+	to :contact_email
+	subject :"This is a test"
+	message :email_content
+]
+return "Done!";
